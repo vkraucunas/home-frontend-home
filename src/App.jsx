@@ -16,8 +16,9 @@ class App extends Component {
   handleClick = () => {
     axios.get(`${baseUrl}/lights/3/brighter?value=60`)
       .then((p) => {
+
         console.log('====================================');
-        console.log("it did a thing");
+        console.log("it did a thing", p.data);
         console.log('====================================');
       })
       .catch((err) => {
@@ -47,7 +48,7 @@ class App extends Component {
       console.log(el.attributes.attributes.name)
       return (
         <div key={index}>
-          <label className={cx({red: !el.state.attributes.on})}>{el.attributes.attributes.name}</label>
+          <label className={cx({red: !el.state.attributes.on})}>{el.attributes.attributes.name} - {el.state.attributes.bri}</label>
           <input type="checkbox"
               onClick={this.handleClick}
               value={el.attributes.attributes.id}

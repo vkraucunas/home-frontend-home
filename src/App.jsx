@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Light from './Light'
 import logo from './logo.svg';
 import s from './App.css';
 import axios from 'axios';
@@ -11,21 +12,6 @@ class App extends Component {
 
   state = {
     lights: []
-  }
-
-  handleClick = () => {
-    axios.get(`${baseUrl}/lights/3/brighter?value=60`)
-      .then((p) => {
-
-        console.log('====================================');
-        console.log("it did a thing", p.data);
-        console.log('====================================');
-      })
-      .catch((err) => {
-        console.log('====================================');
-        console.log("err is:", err);
-        console.log('====================================');
-      })
   }
 
 
@@ -45,15 +31,16 @@ class App extends Component {
 
   renderLights = () => {
     return this.state.lights.map((el, index) => {
-      console.log(el.attributes.attributes.name)
+      let attributes = el.attributes.attributes
+      let state = el.state.attributes
       return (
-        <div key={index}>
-          <label className={cx({red: !el.state.attributes.on})}>{el.attributes.attributes.name} - {el.state.attributes.bri}</label>
-          <input type="checkbox"
-              onClick={this.handleClick}
-              value={el.attributes.attributes.id}
-              />
-        </div>
+        <Light
+          key={index}
+          id={attributes.id}
+          name={attributes.name}
+          on={state.on}
+          brightness={state.bri}
+          />
       )
     })
   }
@@ -62,10 +49,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
         {
           this.renderLights()
         }
